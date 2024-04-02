@@ -6,6 +6,7 @@ import userRoutes from "./src/routers/user_router.js"
 import channelRoutes from "./src/routers/channel_router.js";
 import videoRoutes from "./src/routers/video_router.js";
 import commentRoutes from "./src/routers/comment_router.js";
+import likesRoutes from "./src/routers/likes_router.js";
 
 
 
@@ -17,7 +18,8 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 app.use("/api/channel", channelRoutes);
 app.use("/api/video", videoRoutes);
-app.use("/api/video", commentRoutes)
+app.use("/api/video", commentRoutes);
+app.use("/api/likes", likesRoutes);
 
 
 const PORT = process.env.PORT || 303;
