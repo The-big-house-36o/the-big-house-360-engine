@@ -34,9 +34,8 @@ const commentsController = {
                 data: newComment,
             })
         } catch (error) {
-            console.error("Error uploading video:", error);
             return res.status(500).json({
-                message: "Internal Server Error"
+                message: `Internal Server Error ${error}`
             })
         }
 

@@ -6,7 +6,7 @@ import ImageUploader from "../middlewares/multer.js"
 const userRoutes = express.Router();
 
 userRoutes.get("/", userController.getAllUsers);
-userRoutes.post("/signup", ImageUploader.single("profile"), userController.signUp);
+userRoutes.post("/signup", userController.signUp);
 userRoutes.post("/login", userController.login);
 
 

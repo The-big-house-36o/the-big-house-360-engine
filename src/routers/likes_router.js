@@ -8,4 +8,4 @@ likesRouter.post("/", likesController.addLike);
 likesRouter.get("/", likesController.getAllVideoLikes);
 likesRouter.get("/single-video",likesController.getSingleVideoLikes);
 
-export default likesRouter;
+export default likesRouter;   

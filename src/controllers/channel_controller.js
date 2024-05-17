@@ -10,7 +10,7 @@ const channelController = {
     createChannel: async (req, res) => {
         try {
 
-            const { userId, title, description } = req.body;
+            const { userId, title, description , thumbnail} = req.body;
 
 
             if (!userId) {
@@ -25,23 +25,22 @@ const channelController = {
                 return res.status(404).json({ message: "User not found" });
             }
 
-            const uploadResult = await cloudinary.uploader.upload(req.file.path);
-            const channelThumbnail = uploadResult.secure_url;
 
             const newChannel = new ChannelModel({
                 title,
                 description,
-                thumbnail: channelThumbnail,
+                thumbnail,
                 createdBy: userId
             });
-            user.channels.push(newChannel._id);
-            user.save();
+            await user.channels.push(newChannel._id);
+            await user.save();
             await newChannel.save();
 
-            res.status(201).json({ message: "success", channel: newChannel });
+            return res.status(201).json({ message: "success", channel: newChannel });
         } catch (error) {
-            console.error("Error creating channel:", error);
-            res.status(500).json({ message: "Internal Server Error" });
+            return res.status(500).json({
+                message: `Internal Server Error ${error}`,
+            });
         }
     },
 
@@ -55,7 +54,9 @@ const channelController = {
 
             return res.status(200).json({ channels });
         } catch (error) {
-
+            return res.status(500).json({
+                message: `Internal Server Error ${error}`,
+            });
         }
     }
 

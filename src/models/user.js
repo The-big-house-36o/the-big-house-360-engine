@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
         email: {
             type: String,
             required: [true, "Email is required"],
-            unique: [true, "Email already exists"],
+
         },
         phone: {
             type: String,
@@ -17,12 +17,13 @@ const userSchema = new mongoose.Schema(
         password: {
             type: String,
             required: true,
-            minlength: [8, "Password must be at least 8 characters"],
+
         },
-        channels: [{
-            type: Schema.Types.ObjectId,
-            ref: "Channel"
-        }],
+        channels: {
+            type: Number,
+            default: 0,
+            min: 0
+        },
         profile: {
             type: String,
         },
@@ -31,7 +32,7 @@ const userSchema = new mongoose.Schema(
         },
         bio: {
             type: String,
-            maxlength: [100, "Bio can't be more than 100 words"]
+
         },
         isAdmin: {
             type: Boolean,

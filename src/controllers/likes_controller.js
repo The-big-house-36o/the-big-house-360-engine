@@ -5,9 +5,9 @@ import videoModel from "../models/video.js";
 const likesController = {
     addLike: async (req, res) => {
         try {
-            const { userId, videoId, populate } = req.body;
+            const { userId, videoId } = req.body;
 
-            if (!userId && !videoId) {
+            if (!userId || !videoId) {
                 return res.status(400).json({
                     message: "Both userId and videoId are required"
                 });
@@ -23,8 +23,7 @@ const likesController = {
                 return res.status(404).json({ message: "Video not found" });
             }
 
-
-            const existingLike = await LikesModel.findOne({
+            const existingLike = await likesModel.findOne({
                 videoId: videoId,
                 likedBy: userId
             });
@@ -33,20 +32,22 @@ const likesController = {
                 return res.status(409).json({ message: "User has already liked this video" });
             }
 
-
-            const newLike = new LikesModel({
+            const newLike = new likesModel({
                 videoId: videoId,
                 likedBy: userId
             });
 
-
             await newLike.save();
 
-            res.status(201).json({ message: "Like added successfully", data: newLike });
+            await videoModel.findByIdAndUpdate(videoId, { $inc: { likes: 1 } });
+
+            return res.status(201).json({ message: "Like added successfully", data: newLike });
         } catch (error) {
-            res.status(500).json({ message: "Internal server error", stack: error });
+            console.log(error);
+            return res.status(500).json({ message: "Internal server error", stack: error });
         }
     },
+
 
     getAllVideoLikes: async (req, res) => {
         try {
@@ -65,7 +66,9 @@ const likesController = {
             }
             return res.status(200).json({ likes });
         } catch (error) {
-            return res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({
+                message: `Internal Server Error ${error}`,
+            });
         }
     },
 
@@ -81,9 +84,11 @@ const likesController = {
                 return res.status(404).json({ message: "Video has no likes" });
             }
 
-            return res.status(200).json({ status: "success", data: videoLikes });
+            return res.status(200).json({ message: "success", data: videoLikes });
         } catch (error) {
-
+            return res.status(500).json({
+                message: `Internal Server Error ${error}`,
+            });
         }
     }
 
