@@ -1,9 +1,9 @@
-import express from "express";
+import { Router } from "express";
 import userController from "../controllers/user_controller.js"
 import ImageUploader from "../middlewares/multer.js"
 
 
-const userRoutes = express.Router();
+const userRoutes = Router();
 
 userRoutes.get("/", userController.getAllUsers);
 userRoutes.post("/signup", userController.signUp);

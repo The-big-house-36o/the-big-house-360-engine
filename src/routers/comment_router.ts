@@ -1,7 +1,7 @@
-import express from "express";
+import { Router } from "express";
 import commentsController from "../controllers/comments_controller.js";
 
-const commentRouter = express.Router();
+const commentRouter = Router();
 
 commentRouter.post("/comment", commentsController.addComment);
 

@@ -1,16 +1,15 @@
 import multer, { diskStorage } from "multer";
 import { extname } from "path";
 
-const VideoUploader = multer({
+const ImageUploader = multer({
   storage: diskStorage({}),
   fileFilter: (req, file, cb) => {
     let ext = extname(file.originalname);
-    if (ext !== ".mp4" && ext !== ".avi" && ext !== ".mov") {
-      cb(new Error("Only .mp4, .avi, and .mov files are supported"), false);
-      return;
+    if (ext !== ".jpg" && ext !== ".jpeg" && ext !== ".png") {
+      return "Unsupported file format";
     }
     cb(null, true);
   },
 });
 
-export default VideoUploader;
+export default ImageUploader;

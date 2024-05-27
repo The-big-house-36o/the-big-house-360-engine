@@ -1,7 +1,7 @@
-import express from "express";
+import {Router} from "express";
 import likesController from "../controllers/likes_controller.js";
 
-const likesRouter = express.Router();
+const likesRouter = Router();
 
 
 likesRouter.post("/", likesController.addLike);

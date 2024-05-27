@@ -1,17 +1,12 @@
 import commentModel from "../models/comments.js";
 import User from "../models/user.js";
 import videoModel from "../models/video.js";
+import { Request, Response } from "express";
 
 
 const commentsController = {
-    addComment: async (req, res) => {
+    addComment: async (req: Request, res: Response) => {
         const { commentedBy, message, videoId } = req.body;
-        if (!(commentedBy, message, videoId)) {
-            return res.status(400).json({
-                message: "All field are required"
-            })
-        }
-
         try {
             const user = await User.findById(commentedBy);
             if (!user) {

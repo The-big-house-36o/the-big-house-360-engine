@@ -1,11 +1,13 @@
 import bcrypt from "bcrypt";
 import User from "../models/user.js";
-import cloudinary from "../utils/cloudinary.js";
+import jwt, { Secret } from "jsonwebtoken";
+import { config } from "dotenv";
+import { Request, Response } from "express";
 
-
+config();
 
 const userController = {
-    getAllUsers: async (req, res) => {
+    getAllUsers: async (req: Request, res: Response) => {
         try {
             const allUser = await User.find();
             if (allUser.length === 0) {
@@ -19,7 +21,7 @@ const userController = {
             });
         }
     },
-    signUp: async (req, res) => {
+    signUp: async (req: Request, res: Response) => {
 
         const { name, email, phone, password, username, bio, profile } = req.body;
 
@@ -68,13 +70,9 @@ const userController = {
         }
     },
 
-    login: async (req, res) => {
+    login: async (req: Request, res: Response) => {
         const { email, password } = req.body;
-        if (!(email, password)) {
-            return res.status(400).json({
-                message: "Email and password are required fields",
-            });
-        }
+
         try {
             const foundUser = await User.findOne({ email });
 
@@ -90,9 +88,13 @@ const userController = {
                     message: "Incorrect password",
                 })
             }
+            const secret : Secret = process.env.SECRETKEY as Secret;
+            const token =  jwt.sign({ _id: foundUser._id, email }, secret, { expiresIn: "2 days" })
+
             return res.status(200).json({
                 message: "success",
-                user: foundUser
+                user: foundUser,
+                token
             })
         } catch (error) {
             return res.status(500).json({

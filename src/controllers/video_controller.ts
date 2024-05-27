@@ -1,15 +1,14 @@
 import ChannelModel from "../models/channel.js";
 import userModel from "../models/user.js";
 import videoModel from "../models/video.js";
+import { Request, Response } from "express";
 import cloudinary from "../utils/cloudinary.js";
 
 const videoController = {
-    postVideo: async (req, res) => {
+    postVideo: async (req: Request, res: Response) => {
         const { title, description, channelId, userId, url, thumbnail } = req.body;
 
-        if (!(title, channelId, userId)) {
-            return res.status(400).json({ message: "Channel ID, User Id are required" })
-        }
+
 
         if (title == "" || description == "") {
             return res.status(400).json({ message: "Title and description are required fields " })
@@ -38,9 +37,6 @@ const videoController = {
             })
             await newVideo.save();
 
-            channel.videos.push(newVideo._id);
-            channel.save();
-
             return res.status(201).json({ message: "success", data: newVideo });
 
         } catch (error) {
@@ -50,14 +46,14 @@ const videoController = {
         }
     },
 
-    getAllVideos: async (req, res) => {
+    getAllVideos: async (req: Request, res: Response) => {
         try {
             const videos = await videoModel.find();
             if (!videos) {
                 return res.status(404).json({ message: "No video found" });
             }
 
-            return res.status(200).json({ videos });
+            return res.status(200).json({ videos, total: videos.length });
         } catch (error) {
             return res.status(500).json({
                 message: `Internal Server Error ${error}`,
@@ -65,7 +61,7 @@ const videoController = {
         }
     },
 
-    getTotalVideoByUser: async (req, res) => {
+    getTotalVideoByUser: async (req: Request, res: Response) => {
         try {
             const userId = req.query.userId;
             if (!userId) {

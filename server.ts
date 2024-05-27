@@ -1,5 +1,5 @@
 import express from "express";
-import dotenv from "dotenv";
+import { config } from "dotenv";
 import cors from "cors";
 import dbConnect from "./src/database/config.js"
 import userRoutes from "./src/routers/user_router.js"
@@ -11,17 +11,20 @@ import uploadRoutes from "./src/routers/upload_router.js";
 
 
 
-dotenv.config();
+config();
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded());
+// app.use(express.text());
+// app.use(express.raw());
 app.use("/api/user", userRoutes);
 app.use("/api/channel", channelRoutes);
 app.use("/api/video", videoRoutes);
 app.use("/api/video", commentRoutes);
 app.use("/api/likes", likesRoutes);
-app.use("/api/upload", uploadRoutes)
+app.use("/api/upload", uploadRoutes);
 
 
 const PORT = process.env.PORT || 5000;

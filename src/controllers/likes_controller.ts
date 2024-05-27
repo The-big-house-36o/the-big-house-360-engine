@@ -1,9 +1,10 @@
 import likesModel from "../models/likes.js";
 import userModel from "../models/user.js";
 import videoModel from "../models/video.js";
+import { Request, Response } from "express";
 
 const likesController = {
-    addLike: async (req, res) => {
+    addLike: async (req: Request, res: Response) => {
         try {
             const { userId, videoId } = req.body;
 
@@ -49,9 +50,9 @@ const likesController = {
     },
 
 
-    getAllVideoLikes: async (req, res) => {
+    getAllVideoLikes: async (req: Request, res: Response) => {
         try {
-            const populateField = req.query.populate;
+            const populateField: string = req.query.populate as string;
 
             let query = likesModel.find();
 
@@ -72,7 +73,7 @@ const likesController = {
         }
     },
 
-    getSingleVideoLikes: async (req, res) => {
+    getSingleVideoLikes: async (req: Request, res: Response) => {
         try {
             const videoId = req.query.videoId;
             if (!videoId) {
