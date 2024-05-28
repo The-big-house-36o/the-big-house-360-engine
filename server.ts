@@ -27,6 +27,14 @@ app.use("/api/likes", likesRoutes);
 app.use("/api/upload", uploadRoutes);
 
 
+app.use("*", (req, res) => {
+    res.status(404).json({
+        status: "error",
+        message: "Resource not found",
+    });
+});
+
+
 const PORT = process.env.PORT || 5000;
 
 dbConnect().then(() => {

@@ -18,7 +18,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 const userController = {
-    getAllUsers: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    getAllUsers: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const allUser = yield user_js_1.default.find();
             if (allUser.length === 0) {
@@ -27,14 +27,12 @@ const userController = {
             return res.status(200).json({ message: "success", data: allUser });
         }
         catch (error) {
-            return res.status(500).json({
-                message: `Internal Server Error : ${error}`,
-            });
+            next(error);
         }
     }),
-    signUp: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    signUp: (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         const { name, email, phone, password, username, bio, profile } = req.body;
-        if (!(email && password)) {
+        if (!email || !password) {
             return res.status(400).json({
                 message: "Email and password are required fields",
             });
@@ -68,9 +66,7 @@ const userController = {
             });
         }
         catch (error) {
-            return res.status(500).json({
-                message: "Internal Server Error",
-            });
+            next(error);
         }
     }),
     login: (req, res) => __awaiter(void 0, void 0, void 0, function* () {

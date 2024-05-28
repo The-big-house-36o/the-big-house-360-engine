@@ -7,14 +7,14 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
 const verifyToken = (req, res, next) => {
-    const token = req.header("authorization");
+    const token = req.header("token");
     if (!token) {
         return res.status(401).send("Access denied");
     }
     try {
-        const secret = process.env.SECRET_TOKEN;
-        const verified = jsonwebtoken_1.default.verify(token, secret);
-        req.token = verified;
+        const secret = process.env.SECRETKEY;
+        const decoded = jsonwebtoken_1.default.verify(token, secret);
+        req.user = decoded;
         next();
     }
     catch (error) {
