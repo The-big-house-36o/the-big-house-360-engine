@@ -62,18 +62,22 @@ const userController = {
                 user: savedUser
             });
         } catch (error) {
-           next(error)
+            next(error)
         }
     },
 
     login: async (req: Request, res: Response) => {
         const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ status: "error", message: "all fields are required" })
+        }
 
         try {
             const foundUser = await User.findOne({ email });
 
             if (!foundUser || foundUser == null) {
                 return res.status(400).json({
+                    status: "error",
                     message: "User not found",
                 });
             }
@@ -81,6 +85,7 @@ const userController = {
             const passwordMatched = await bcrypt.compare(password, foundUser.password,);
             if (!passwordMatched) {
                 return res.status(400).json({
+                    status: "error",
                     message: "Incorrect password",
                 })
             }

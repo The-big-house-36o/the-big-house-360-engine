@@ -8,6 +8,7 @@ import videoRoutes from "./src/routers/video_router.js";
 import commentRoutes from "./src/routers/comment_router.js";
 import likesRoutes from "./src/routers/likes_router.js";
 import uploadRoutes from "./src/routers/upload_router.js";
+import customError from "./src/middlewares/custom_error.js";
 
 
 
@@ -35,6 +36,7 @@ app.use("*", (req, res) => {
 });
 
 
+app.use(customError);
 const PORT = process.env.PORT || 5000;
 
 dbConnect().then(() => {
