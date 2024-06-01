@@ -71,16 +71,21 @@ const userController = {
     }),
     login: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ status: "error", message: "all fields are required" });
+        }
         try {
             const foundUser = yield user_js_1.default.findOne({ email });
             if (!foundUser || foundUser == null) {
                 return res.status(400).json({
+                    status: "error",
                     message: "User not found",
                 });
             }
             const passwordMatched = yield bcrypt_1.default.compare(password, foundUser.password);
             if (!passwordMatched) {
                 return res.status(400).json({
+                    status: "error",
                     message: "Incorrect password",
                 });
             }

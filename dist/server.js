@@ -13,6 +13,7 @@ const video_router_js_1 = __importDefault(require("./src/routers/video_router.js
 const comment_router_js_1 = __importDefault(require("./src/routers/comment_router.js"));
 const likes_router_js_1 = __importDefault(require("./src/routers/likes_router.js"));
 const upload_router_js_1 = __importDefault(require("./src/routers/upload_router.js"));
+const custom_error_js_1 = __importDefault(require("./src/middlewares/custom_error.js"));
 (0, dotenv_1.config)();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -32,6 +33,7 @@ app.use("*", (req, res) => {
         message: "Resource not found",
     });
 });
+app.use(custom_error_js_1.default);
 const PORT = process.env.PORT || 5000;
 (0, config_js_1.default)().then(() => {
     app.listen(PORT, () => {
