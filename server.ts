@@ -27,7 +27,7 @@ app.use("/api/video", commentRoutes);
 app.use("/api/likes", likesRoutes);
 app.use("/api/upload", uploadRoutes);
 
-
+//Not found handler
 app.use("*", (req, res) => {
     res.status(404).json({
         status: "error",
