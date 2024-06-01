@@ -27,6 +27,7 @@ app.use("/api/video", video_router_js_1.default);
 app.use("/api/video", comment_router_js_1.default);
 app.use("/api/likes", likes_router_js_1.default);
 app.use("/api/upload", upload_router_js_1.default);
+//Not found handler
 app.use("*", (req, res) => {
     res.status(404).json({
         status: "error",

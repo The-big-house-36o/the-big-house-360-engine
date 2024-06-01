@@ -6,9 +6,13 @@
   "scripts": {
     "prebuild": "npm install --only=dev",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "clean": "rimraf dist",
+    "start": "npm run build && node dist/server.js",
     "dev": "concurrently \"tsc -w\" \"nodemon dist/server.js\"",
-    "deploy": "npm run prebuild && npm run build"
+    "deploy": "npm run prebuild && npm run build",
+    "lint": "eslint 'src/**/*.ts'",
+    "prestart": "npm run build",
+    "env": "dotenv -e .env"
   },
   "author": "",
   "license": "ISC",
